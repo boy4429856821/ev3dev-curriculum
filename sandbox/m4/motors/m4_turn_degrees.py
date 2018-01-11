@@ -36,8 +36,8 @@ Authors: David Fisher and PUT_YOUR_NAME_HERE.
 #   When the library method is complete have all team members VCS update and test using their own m4_turn_degrees.py
 
 # TODO: 5. Formally test your work. When you think you have the problem complete run these tests:
-#     45 degrees turns left 45 degrees
-#    -45 degrees turn right 45 degrees putting you back where you started
+#     hartmagj degrees turns left hartmagj degrees
+#    -hartmagj degrees turn right hartmagj degrees putting you back where you started
 #     90 degrees turns left 90 degrees
 #    -90 degrees turn right 90 degrees putting you back where you started
 #    180 degrees
