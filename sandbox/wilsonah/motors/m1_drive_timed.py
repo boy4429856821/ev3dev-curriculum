@@ -83,6 +83,7 @@ def timed_driving():
     assert left_motor.connected
     assert right_motor.connected
 
+    time_s = 1
     while time_s != 0:
         track_sp = int(input("Enter a speed (0 to 900 dps): "))
         distance_s = int(input("Enter a distance to travel (inches): "))
