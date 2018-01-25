@@ -101,7 +101,6 @@ def timed_driving():
 # Calls  main  to start the ball rolling.
 # ----------------------------------------------------------------------
 timed_driving()
-
 # TODO: 4. Change the input questions from:
 #   Enter a speed for the left motor (0 to 900 dps):
 #   Enter a speed for the right motor (0 to 900 dps):
