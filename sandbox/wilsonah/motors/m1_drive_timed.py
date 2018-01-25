@@ -64,6 +64,44 @@ Authors: David Fisher and Andrew Wilson.
 #    print("  Timed Driving")
 #    print("--------------------------------------------")
 #    ev3.Sound.speak("Timed Driving").wait()
+
+import ev3dev.ev3 as ev3
+import time
+
+
+def timed_driving():
+    print("--------------------------------------------")
+    print("  Timed Driving")
+    print("--------------------------------------------")
+    ev3.Sound.speak("Timed Driving").wait()
+
+    # Connect two large motors on output ports B and C
+    left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+    right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+
+    # Check that the motors are actually connected
+    assert left_motor.connected
+    assert right_motor.connected
+
+    while time_s != 0:
+        track_sp = int(input("Enter a speed (0 to 900 dps): "))
+        distance_s = int(input("Enter a distance to travel (inches): "))
+        left_motor.run_forever(speed_sp=track_sp)
+        right_motor.run_forever(speed_sp=track_sp)
+        duration = (distance_s - (.289 + (track_sp / 100))) / 1.085
+        time.sleep(duration)
+        left_motor.stop()
+        right_motor.stop(stop_action="brake")
+
+    print("Goodbye!")
+    ev3.Sound.speak("Goodbye").wait()
+
+
+# ----------------------------------------------------------------------
+# Calls  main  to start the ball rolling.
+# ----------------------------------------------------------------------
+timed_driving()
+
 # TODO: 4. Change the input questions from:
 #   Enter a speed for the left motor (0 to 900 dps):
 #   Enter a speed for the right motor (0 to 900 dps):
