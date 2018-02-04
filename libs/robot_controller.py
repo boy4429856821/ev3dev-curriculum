@@ -24,6 +24,10 @@ class Snatch3r(object):
     def __init__(self):
         self.left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+        self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
+        self.TouchSensor = ev3.TouchSensor
+        assert self.arm_motor.connected
+        assert self.TouchSensor
         assert self.left_motor.connected
         assert self.right_motor.connected
 
@@ -49,3 +53,64 @@ class Snatch3r(object):
         self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
+    def left_forward(self, button_state):
+        assert self.left_motor.connected
+
+        while button_state:
+            self.left_motor.run_forever(speed=600)
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+        self.left_motor.stop(stop_action="brake")
+
+    def right_forward(self, button_state):
+        assert self.right_motor.connected
+
+        while button_state:
+            self.right_motor.run_forever(speed=600)
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+        self.right_motor.stop(stop_action="brake")
+
+    def right_backward(self, button_state):
+        assert self.right_motor.connected
+
+        while button_state:
+            self.right_motor.run_forever(speed=-600)
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+        self.right_motor.stop(stop_action="brake")
+
+    def left_backward(self, button_state):
+        assert self.left_motor.connected
+
+        while button_state:
+            self.left_motor.run_forever(speed=-600)
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+        self.left_motor.stop(stop_action="brake")
+
+    def shutdown(self):
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+        self.left_motor.stop(stop_action="brake")
+        self.right_motor.stop(stop_action="brake")
+        print("Goodbye!")
+        ev3.Sound.speak("Goodbye")
+
+    def arm_calibiration(self, degrees):
+        assert self.arm_motor.connected
+        self.arm_motor.run_direct(speed_sp=700, position_sp=degrees, stop_action='brake')
+        self.arm_motor.wait_while(ev3.MediumMotor.STATE_RUNNING)
+
+    def arm_up(self):
+        assert self.arm_motor.connected
+        assert self.TouchSensor
+        self.arm_motor.run_forever(speed_sp=900)
+        while not self.TouchSensor.is_pressed:
+            time.sleep(0.01)
+        self.arm_motor.stop(stop_action="brake")
+
+    def arm_down(self):
+        assert self.arm_motor.connected
+        self.arm_motor.run_direct(speed_sp=900, position_sp=5112, stop_action="brake")
+        self.arm_motor.wait_while(ev3.MediumMotor.STATE_RUNNING)
