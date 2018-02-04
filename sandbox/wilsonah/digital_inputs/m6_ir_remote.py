@@ -62,16 +62,16 @@ def main():
     # Remote control channel 1 is for driving the crawler tracks around (none of these functions exist yet below).
     rc1 = ev3.RemoteControl(channel=1)
     assert rc1.connected
-    rc1.on_blue_up = lambda state: handle_right_forward(state, dc)
-    rc1.on_blue_down = lambda state: handle_right_backward(state, dc)
-    rc1.on_red_up = lambda state: handle_left_forward(state, dc)
-    rc1.on_red_down = lambda state: handle_right_backward(state, dc)
+    rc1.on_blue_up = lambda state: handle_right_forward(state, robot)
+    rc1.on_blue_down = lambda state: handle_right_backward(state, robot)
+    rc1.on_red_up = lambda state: handle_left_forward(state, robot)
+    rc1.on_red_down = lambda state: handle_right_backward(state, robot)
     # Remote control channel 2 is for moving the arm up and down (all of these functions already exist below).
     rc2 = ev3.RemoteControl(channel=2)
     assert rc2.connected
-    rc2.on_red_up = lambda state: handle_arm_up_button(state, dc)
-    rc2.on_red_down = lambda state: handle_arm_down_button(state, dc)
-    rc2.on_blue_down = lambda state: handle_calibrate_button(state, dc)
+    rc2.on_red_up = lambda state: handle_arm_up_button(state, robot)
+    rc2.on_red_down = lambda state: handle_arm_down_button(state, robot)
+    rc2.on_blue_down = lambda state: handle_calibrate_button(state, robot)
     # For our standard shutdown button.
     btn = ev3.Button()
     btn.on_backspace = lambda state: handle_shutdown(state, dc)
@@ -98,6 +98,8 @@ def main():
 # Movement event handlers have not been provided.
 # ----------------------------------------------------------------------
 # TODO: 6. Implement the IR handler callbacks handlers.
+
+
 def handle_left_forward(button_state, robot):
     if button_state:
         robot.left_forward(button_state)
@@ -116,6 +118,7 @@ def handle_left_backward(button_state, robot):
 def handle_right_backward(button_state, robot):
     if button_state:
         robot.right_backward(button_state)
+
 # TODO: 7. When your program is complete, call over a TA or instructor to sign your checkoff sheet and do a code review.
 #
 # Observations you should make, IR buttons are a fun way to control the robot.

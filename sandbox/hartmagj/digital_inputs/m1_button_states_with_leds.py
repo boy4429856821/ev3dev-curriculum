@@ -55,17 +55,6 @@ def main():
 
     k = 0
 
-    def handle_up_down_button(state, name):
-        if state:
-            print(name, "was pressed")
-            return True
-        else:
-            print(name, "was released")
-            return False
-
-    btn.on_up = lambda state: handle_up_down_button(state, "Up")
-    btn.on_down = lambda state: handle_up_down_button(state, "Down")
-
     while True:
         # d: 3. Implement the left, right, and up buttons as follows:
         #    When the up button is being pressed:
@@ -100,7 +89,7 @@ def main():
                 ev3.Leds.all_off()
             while True:
                 time.sleep(0.01)
-                if btn.on_up(False):
+                if btn.up == 0:
                     print('broken')
                     break
             if k == 3:
