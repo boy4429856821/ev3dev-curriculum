@@ -55,9 +55,9 @@ class Snatch3r(object):
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
 
-    def arm_calibiration(self):
+    def arm_calibiration(self,degrees):
         assert self.arm_motor.connected
-        self.arm_motor.run_direct(speed_sp=900, position_sp=0,stop_action='brake')
+        self.arm_motor.run_direct(speed_sp=700, position_sp=degrees,stop_action='brake')
         self.arm_motor(ev3.MediumMotor.STATE_RUNNING)
 
 
