@@ -5,10 +5,10 @@ This module lets you practice using the buttons on the EV3 as states.
 Normally we'll use event callbacks with buttons, but this example uses buttons as states for the purposes of example.
 Much like we did in boy4429856821 of the motors unit, later we will show you different (better) ways to use buttons.
 
-Authors: David Fisher and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+Authors: David Fisher and Grant Hartman.
+"""  # d: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
-# TODO: 2. Have someone on your team run this program as is on the EV3 and make sure everyone understands the code.
+# d: 2. Have someone on your team run this program as is on the EV3 and make sure everyone understands the code.
 #   You will exit the program by pressing the back button on the EV3 brick (button just below the screen).
 #   The back button is already implemented to exit the program (as you can see in the code below).
 
@@ -52,8 +52,22 @@ def main():
                   ev3.Leds.AMBER]
 
     current_color_index = 0
+
+    k = 0
+
+    def handle_up_down_button(state, name):
+        if state:
+            print(name, "was pressed")
+            return True
+        else:
+            print(name, "was released")
+            return False
+
+    btn.on_up = lambda state: handle_up_down_button(state, "Up")
+    btn.on_down = lambda state: handle_up_down_button(state, "Down")
+
     while True:
-        # TODO: 3. Implement the left, right, and up buttons as follows:
+        # d: 3. Implement the left, right, and up buttons as follows:
         #    When the up button is being pressed:
         #      -- print the word "up"
         #      -- turn off all LEDs
@@ -70,6 +84,39 @@ def main():
         #   Optional: You can also comment out the code above that does the 6 second red, green, off pattern.  It was
         #     there just to provide you with code examples for using the LEDs.  It does not need to run anymore.
         #     Just make sure not to comment out too much. ;)
+
+        if btn.up:
+            print('up')
+            if k == 0:
+                ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+                ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+            if k == 1:
+                ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
+                ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
+            if k == 2:
+                ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.AMBER)
+                ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.AMBER)
+            if k == 3:
+                ev3.Leds.all_off()
+            while True:
+                time.sleep(0.01)
+                if btn.on_up(False):
+                    print('broken')
+                    break
+            if k == 3:
+                k = 0
+            else:
+                k += 1
+
+        elif btn.left:
+            print('left')
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
+        elif btn.right:
+            print('right')
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+
 
         # TODO: 4. Implement the down button to change the color of both LEDs.
         #   The first press to down should make both LEDs GREEN, the next press makes them RED, then AMBER, then off.
