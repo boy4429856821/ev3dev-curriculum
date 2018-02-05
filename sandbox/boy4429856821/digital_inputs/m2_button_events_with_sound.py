@@ -53,10 +53,10 @@ def main():
     btn.on_down = handle_down_button
     btn.on_left = handle_left_button
     btn.on_right = handle_right_button
-    btn.backspace = lambda state: handle_shutdown(state,dc)
+    btn.on_backspace = lambda state: handle_shutdown(state, dc)
 
 
-    # TODO: 5. Note #4 is lower (this is TO DO #5 which you should do after #4).
+    # Done 4
     # Add a lambda callback for on_backspace.  The syntax of lambda is:
     #   btn.on_backspace = lamdba predefined_inputs: function_name(parameters)
     # You will need to change the predefined_inputs, function_name, and parameters from that syntax template.
@@ -135,7 +135,7 @@ def handle_right_button(button_state):
 def handle_shutdown(button_state, dc):
     if button_state:
         print('back')
-        dc.running == False
+        dc.running = False
 
 
 

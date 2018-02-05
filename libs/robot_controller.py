@@ -56,38 +56,42 @@ class Snatch3r(object):
     def left_forward(self, button_state):
         assert self.left_motor.connected
         assert self.right_motor.connected
-        while button_state:
-            self.left_motor.run_forever(speed=900)
+        if button_state:
+            self.left_motor.run_forever(speed_sp=900)
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
-        self.left_motor.stop(stop_action="break")
-        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+        else:
+            self.left_motor.stop(stop_action="brake")
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
 
     def left_backward(self, button_state):
         assert self.left_motor.connected
         assert self.right_motor.connected
-        while button_state:
-            self.left_motor.run_forever(speed=-900)
+        if button_state:
+            self.left_motor.run_forever(speed_sp=-600)
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
-        self.left_motor.stop(stop_action="break")
-        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+        else:
+            self.left_motor.stop(stop_action="brake")
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
 
     def right_forward(self, button_state):
         assert self.left_motor.connected
         assert self.right_motor.connected
-        while button_state:
-            self.right_motor.run_forever(speed=900)
+        if button_state:
+            self.right_motor.run_forever(speed_sp=900)
             ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
-        self.right_motor.stop(stop_action="break")
-        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+        else:
+            self.right_motor.stop(stop_action="brake")
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
 
     def right_backward(self, button_state):
         assert self.left_motor.connected
         assert self.right_motor.connected
-        while button_state:
-            self.left_motor.run_forever(speed=-900)
+        if button_state:
+            self.right_motor.run_forever(speed_sp=-900)
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
-        self.right_motor.stop(stop_action="break")
-        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
+        else:
+            self.right_motor.stop(stop_action="brake")
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
 
     def arm_calibration(self):
         assert self.arm_motor.connected

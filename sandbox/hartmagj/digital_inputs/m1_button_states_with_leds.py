@@ -74,8 +74,8 @@ def main():
         #     there just to provide you with code examples for using the LEDs.  It does not need to run anymore.
         #     Just make sure not to comment out too much. ;)
 
-        if btn.up:
-            print('up')
+        if btn.down:
+            print('down')
             if k == 0:
                 ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
                 ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
@@ -96,7 +96,9 @@ def main():
                 k = 0
             else:
                 k += 1
-
+        elif btn.up:
+            print('up')
+            ev3.Leds.all_off()
         elif btn.left:
             print('left')
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
