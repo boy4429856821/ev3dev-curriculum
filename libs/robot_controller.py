@@ -12,7 +12,7 @@
 """
 
 import ev3dev.ev3 as ev3
-import math
+import math as m
 import time
 
 
@@ -48,8 +48,8 @@ class Snatch3r(object):
         # Check that the motors are actually connected
         assert self.left_motor.connected
         assert self.right_motor.connected
-        self.left_motor.run_to_rel_pos(position_sp=degrees_turn*4.15, speed_sp=turn_speed, stop_action="brake")
-        self.right_motor.run_to_rel_pos(position_sp=-degrees_turn*4.15, speed_sp=turn_speed, stop_action="brake")
+        self.left_motor.run_to_rel_pos(position_sp=degrees_turn*2*2.26, speed_sp=turn_speed, stop_action="brake")
+        self.right_motor.run_to_rel_pos(position_sp=-degrees_turn*2*2.26, speed_sp=turn_speed, stop_action="brake")
         self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
