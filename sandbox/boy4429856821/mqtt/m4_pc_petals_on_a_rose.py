@@ -7,7 +7,7 @@ need to ever open that file).  Your EV3 is acting as a puzzle, your goal is to u
 The way the puzzle works is that five dice roll and somehow they combine to a single number.
 You need to figure out the pattern and win the game.  To win the game you must...
 
-Correctly guess the number 3 times in a row (while using 5 dice).
+Correctly guess the number 3 times in a                 AZXCCrow (while using 5 dice).
 
 Don't plan to win by random guessing, try to figure out the pattern. Before you can figure out the pattern though, first
 you need to write the code to make guesses.  Additionally if you write more code you can tell the EV3 how to change the
@@ -15,8 +15,8 @@ number of dice to help you figure out the pattern more quickly.
 
 To check off this part of the assignment win the game (without looking at the EV3 code).
 
-Authors: David Fisher and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+Authors: David Fisher and Coleman Weaver 
+"""  # Done
 
 import tkinter
 from tkinter import ttk
@@ -24,23 +24,31 @@ from tkinter import ttk
 import mqtt_remote_method_calls as com
 
 
-# TODO: 2. Create a class. Feel free to call it MyDelegate.
+# Done 2
 # Within that class you don't even need an __init__ constructor (an empty constructor comes for free)
 
-# TODO: 3. Create a method named guess_response within MyDelegate.
+class MyDelegate(object):
+
+    def guess_response(self, message_from_ev3):
+        print(message_from_ev3)
+
+
+# Done
 # guess_response needs to receive self and a string, feel free to call the string parameter message_from_ev3
 # within the body of the method print message_from_ev3.  That's it.  You simply need to hear what EV3 tells you.
 
 
 def main():
-    # TODO: 4. Create a my_delegate object from your MyDelegate class
+    # Done 3
     # Create an mqtt_client object from the com.MqttClient class passing in my_delegate
     # connect_to_ev3
-
+    my_delegate = MyDelegate
+    mqtt_client = com.MqttClient(my_delegate)
+    mqtt_client.connect_to_ev3()
     root = tkinter.Tk()
     root.title("Petals on a Rose")
 
-    main_frame = ttk.Frame(root, padding=20, relief='raised')
+    main_frame = ttk.Frame( root, padding=20, relief='raised')
     main_frame.grid()
 
     label = ttk.Label(main_frame, text='Look at the EV3, then enter a guess for the solution:')
@@ -75,7 +83,7 @@ def main():
 def guess(mqtt_client, number_to_guess_entry):
     """ Calls a method on EV3 called 'guess' passing in an int from the number_to_guess_entry. """
     # TODO: 5. Uncomment the line of code below to make guesses with EV3.
-    # mqtt_client.send_message("guess", [int(number_to_guess_entry.get())])
+    mqtt_client.send_message("guess", [int(number_to_guess_entry.get())])
     number_to_guess_entry.delete(0, 'end')
     # Note: You can play the game with only TO DO 5 complete, but it will be easier to solve if you do TO DO 6 as well.
 

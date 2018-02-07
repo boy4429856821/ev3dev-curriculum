@@ -26,6 +26,8 @@ class Snatch3r(object):
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
         self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
         self.TouchSensor = ev3.TouchSensor
+        self.pixy =ev3.Sensor(driver_name="pixy-lego")
+        assert self.pixy
         assert self.arm_motor.connected
         assert self.TouchSensor
         assert self.left_motor.connected
