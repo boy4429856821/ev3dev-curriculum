@@ -31,10 +31,12 @@ Author: David Fisher.
 """
 import mqtt_remote_method_calls as com
 import robot_controller as robo
+import ev3dev.ev3 as ev3
 
 
 def main():
     robot = robo.Snatch3r()
+    ev3.Sound.speak("I am Running")
     mqtt_client = com.MqttClient(robot)
     mqtt_client.connect_to_pc()
     # mqtt_client.connect_to_pc("35.194.247.175")  # Off campus IP address of a GCP broker
