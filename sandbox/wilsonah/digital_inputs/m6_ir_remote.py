@@ -67,23 +67,23 @@ def main():
     rc1.on_red_up = lambda state: handle_left_forward(state, robot)
     rc1.on_red_down = lambda state: handle_left_backward(state, robot)
     # Remote control channel 2 is for moving the arm up and down (all of these functions already exist below).
-   # rc2 = ev3.RemoteControl(channel=2)
-   # assert rc2.connected
-    #rc2.on_red_up = lambda state: handle_arm_up_button(state, robot)
-    #rc2.on_red_down = lambda state: handle_arm_down_button(state, robot)
-    #rc2.on_blue_down = lambda state: handle_calibrate_button(state, robot)
+    rc2 = ev3.RemoteControl(channel=2)
+    assert rc2.connected
+    rc2.on_red_up = lambda state: handle_arm_up_button(state, robot)
+    rc2.on_red_down = lambda state: handle_arm_down_button(state, robot)
+    rc2.on_blue_down = lambda state: handle_calibrate_button(state, robot)
     # For our standard shutdown button.
-    #btn = ev3.Button()
-   #btn.on_backspace = lambda state: handle_shutdown(state, dc)
+    btn = ev3.Button()
+    btn.on_backspace = lambda state: handle_shutdown(state, dc)
 
-    #robot.arm_calibration()  # Start with an arm calibration in this program.
+    robot.arm_calibration()  # Start with an arm calibration in this program.
 
     while dc.running:
         # DONE: 5. Process the RemoteControl objects.
         print("loop")
         rc1.process()
-       # rc2.process()
-        # btn.process()
+        rc2.process()
+        btn.process()
         time.sleep(0.01)
 
     # TODO: 2. Have everyone talk about this problem together then pick one  member to modify libs/robot_controller.py
