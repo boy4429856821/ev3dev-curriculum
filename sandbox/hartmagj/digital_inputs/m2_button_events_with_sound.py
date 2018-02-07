@@ -91,6 +91,17 @@ def handle_up_button(button_state):
         print("Up button was released")
 
 
+def handle_down_button(button_state):
+        print("Down button is pressed")
+    else:
+        print("Down button is pressed")
+
+def handle_right_button(button_state):
+        print("")
+
+
+
+
 # TODO: 6. Implement the handle_shutdown function.
 #   Function signature should be:
 #       def handle_shutdown(button_state, dc):

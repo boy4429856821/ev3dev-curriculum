@@ -22,10 +22,13 @@ class Snatch3r(object):
     # DONE: Implement the Snatch3r class as needed when working the sandox exercises
     # (and delete these comments)
     def __init__(self):
+        self.running = True
         self.left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
         self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
         self.TouchSensor = ev3.TouchSensor
+        self.pixy =ev3.Sensor(driver_name="pixy-lego")
+        assert self.pixy
         assert self.arm_motor.connected
         assert self.TouchSensor
         assert self.left_motor.connected
@@ -123,5 +126,40 @@ class Snatch3r(object):
         self.arm_motor.stop(stop_action="brake")
         self.left_motor.stop(stop_action="brake")
         self.right_motor.stop(stop_action="brake")
-        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
-        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+
+    def forward(self, left_speed, right_speed):
+        assert self.left_motor.connected
+        assert self.right_motor.connected
+        self.right_motor.run_forever(speed_sp=right_speed)
+        self.left_motor.run_forever(speed_sp=left_speed)
+
+    def left(self, left_speed, right_speed):
+        assert self.left_motor.connected
+        assert self.right_motor.connected
+        self.right_motor.run_forever(speed_sp=right_speed)
+        self.left_motor.run_forever(speed_sp=-left_speed)
+
+    def stop(self):
+        assert self.left_motor.connected
+        assert self.right_motor.connected
+        self.right_motor.stop(stop_action="brake")
+        self.left_motor.stop(stop_action="brake")
+
+    def right(self, left_speed, right_speed):
+        assert self.left_motor.connected
+        assert self.right_motor.connected
+        self.right_motor.run_forever(speed_sp=-right_speed)
+        self.left_motor.run_forever(speed_sp=left_speed)
+
+    def back(self, left_speed, right_speed):
+        assert self.left_motor.connected
+        assert self.right_motor.connected
+        self.right_motor.run_forever(speed_sp=-right_speed)
+        self.left_motor.run_forever(speed_sp=-left_speed)
+
+    def loop_forever(self):
+        self.running = True
+        while self.running:
+            time.sleep(0.1)
