@@ -36,7 +36,10 @@ def main():
 
         if robot.pixy.value(1) <150:
             robot.turn_degrees(-90,turn_speed)
-        if robot.pixy.value(1)
+        if robot.pixy.value(1) > 170:
+            robot.turn_degrees(90,turn_speed)
+        else:
+            robot.shutdown()
 
         # TODO: 3. Use the x value to turn the robot
         #   If the Pixy x value is less than 150 turn left (-turn_speed, turn_speed)
