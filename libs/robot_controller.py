@@ -25,20 +25,22 @@ class Snatch3r(object):
         self.left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
         self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
-        self.TouchSensor = ev3.TouchSensor
-        self.pixy =ev3.Sensor(driver_name="pixy-lego")
-        self.color_sensor = ev3.ColorSensor
-        self.ir_sensor = ev3.InfraredSensor
-        assert self.ir_sensor
-        assert self.color_sensor
-        assert self.pixy
+        self.touch_sensor = ev3.TouchSensor()
+        self.pixy = ev3.Sensor(driver_name="pixy-lego")
+        self.color_sensor = ev3.ColorSensor()
+        self.ir_sensor = ev3.InfraredSensor()
+        assert self.ir_sensor.connected
+        assert self.color_sensor.connected
+        assert self.pixy.connected
         assert self.arm_motor.connected
-        assert self.TouchSensor
+        assert self.touch_sensor.connected
         assert self.left_motor.connected
         assert self.right_motor.connected
 
     def drive_inches(self, distance, deg_speed):
-
+        """Drives a given distance at a given speed (inches and inches/second)
+           Drives forwards and backwards based on if the position is positive or negative
+        """
         # Check that the motors are actually connected
         assert self.left_motor.connected
         assert self.right_motor.connected
@@ -102,7 +104,7 @@ class Snatch3r(object):
     def arm_calibration(self):
         assert self.arm_motor.connected
         self.arm_motor.run_forever(speed_sp=900)
-        while not self.TouchSensor.is_pressed:
+        while not self.touch_sensor.is_pressed:
             time.sleep(0.01)
         self.arm_motor.stop(stop_action="brake")
         ev3.Sound.beep()
@@ -114,7 +116,7 @@ class Snatch3r(object):
 
     def arm_up(self):
         self.arm_motor.run_forever(speed_sp=900)
-        while not self.TouchSensor.is_pressed:
+        while not self.touch_sensor.is_pressed:
             time.sleep(0.01)
         self.arm_motor.stop(stop_action="brake")
         ev3.Sound.beep()
