@@ -12,7 +12,6 @@
 """
 
 import ev3dev.ev3 as ev3
-import math as m
 import time
 
 
@@ -28,6 +27,10 @@ class Snatch3r(object):
         self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
         self.TouchSensor = ev3.TouchSensor
         self.pixy =ev3.Sensor(driver_name="pixy-lego")
+        self.color_sensor = ev3.ColorSensor
+        self.ir_sensor = ev3.InfraredSensor
+        assert self.ir_sensor
+        assert self.color_sensor
         assert self.pixy
         assert self.arm_motor.connected
         assert self.TouchSensor
