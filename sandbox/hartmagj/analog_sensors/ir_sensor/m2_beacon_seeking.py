@@ -64,7 +64,7 @@ def seek_beacon(robot):
     forward_speed = 300
     turn_speed = 100
 
-    while not robot.TouchSensor.is_pressed:
+    while not robot.touch_sensor.is_pressed:
         # The touch sensor can be used to abort the attempt (sometimes handy during testing)
 
         # d: 3. Use the beacon_seeker object to get the current heading and distance.
