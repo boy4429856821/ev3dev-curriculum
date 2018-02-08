@@ -36,6 +36,7 @@ def main():
 
 
     while not robot.touch_sensor.is_pressed:
+        time.sleep(.01)
         # Done 2
         # It is recommended that you add to your Snatch3r class's constructor the pixy object, as shown
         #   self.pixy = ev3.Sensor(driver_name="pixy-lego")
