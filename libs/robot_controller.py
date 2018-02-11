@@ -13,6 +13,7 @@
 
 import ev3dev.ev3 as ev3
 import time
+import math
 
 
 class Snatch3r(object):
@@ -190,3 +191,48 @@ class Snatch3r(object):
         self.running = True
         while self.running:
             time.sleep(0.1)
+
+    def seek_beacon(self):
+        """
+        Uses the IR Sensor in BeaconSeeker mode to find the beacon.  If the beacon is found this return True.
+        If the beacon is not found and the attempt is cancelled by hitting the touch sensor, return False.
+        """
+
+        ir_sensor = ev3.InfraredSensor()
+        find_beacon = ev3.BeaconSeeker(ir_sensor, channel=1)
+
+        while not self.touch_sensor.is_pressed:
+            # The touch sensor can be used to abort the attempt (sometimes handy during testing)
+            current_heading = find_beacon.heading  # use the beacon_seeker heading
+            current_distance = find_beacon.distance  # use the beacon_seeker distance
+            if current_distance == -128:
+                # If the IR Remote is not found just sit idle for this program until it is moved.
+                print("IR Remote not found. Distance is -128")
+                self.shutdown()
+            else:
+                if math.fabs(current_heading) < 2:
+                    print("On the right heading. Distance: ", current_distance)
+
+                    if math.fabs(current_distance) == 0:
+                        self.drive_inches(4, 100)
+                        self.shutdown()
+                        ev3.Sound.beep()
+                        return True
+                    else:
+                        self.forward(100, 100)
+
+                elif math.fabs(current_heading) <= 20:
+                    if current_heading < 0:
+                        self.forward(-100, 100)
+                    else:
+                        self.forward(100, -100)
+                    print('turning to look for remote')
+                else:
+                    print(current_heading, ' , heading is too far off')
+
+            time.sleep(0.2)
+
+        # The touch_sensor was pressed to abort the attempt if this code runs.
+        print("Abandon ship!")
+        self.shutdown()
+        return False
