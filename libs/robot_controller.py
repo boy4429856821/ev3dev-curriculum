@@ -111,6 +111,7 @@ class Snatch3r(object):
         """Calibrates the gripper arm origin location by sending the arm up until it hits the touch sensor.
            After it hits the sensor, it goes down the set degrees to reach the calibrated origin"""
         assert self.arm_motor.connected
+        assert self.touch_sensor.connected
         self.arm_motor.run_forever(speed_sp=900)
         while not self.touch_sensor.is_pressed:
             time.sleep(0.01)
