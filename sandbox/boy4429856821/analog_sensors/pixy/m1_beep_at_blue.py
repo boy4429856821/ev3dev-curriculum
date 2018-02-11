@@ -29,7 +29,7 @@ def main():
     robot = robo.Snatch3r()
     robot.pixy.mode = "SIG1"
     print('(X,Y0 =({},{}) Width={} Height={}'.format(pixy.value(1),pixy.value(2),pixy.value(3),pixy.value(4)))
-    if "SIG1" is True:
+    if "SIG2" is True:
         ev3.Sound.beep()
     if robot.pixy.value(3) > 1:
         ev3.Sound.beep()
@@ -44,7 +44,7 @@ def main():
         # Then here you can use a command like width = robot.pixy.value(3)
 
         print('(X,Y0 =({},{}) Width={} Height={}'.format(pixy.value(1), pixy.value(2), pixy.value(3), pixy.value(4)))
-        if "SIG1" is True:
+        if "SIG2" is True:
             ev3.Sound.beep()
         if robot.pixy.value(3) > 1:
             ev3.Sound.beep()
