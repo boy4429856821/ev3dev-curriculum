@@ -17,7 +17,6 @@ import time
 
 class Snatch3r(object):
     """Commands for the Snatch3r robot that might be useful in many different programs."""
-    ""
     # DONE: Implement the Snatch3r class as needed when working the sandox exercises
     # (and delete these comments)
     def __init__(self):
@@ -52,7 +51,7 @@ class Snatch3r(object):
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
     def turn_degrees(self, degrees_turn, turn_speed):
-
+        """Rotates by a given degree value and can rotate left or right based on the sign of the degrees"""
         # Check that the motors are actually connected
         assert self.left_motor.connected
         assert self.right_motor.connected
@@ -62,6 +61,7 @@ class Snatch3r(object):
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
     def left_forward(self, button_state):
+        """Runs the left motor at maximum speed and changing the left light green while the button is pressed"""
         assert self.left_motor.connected
         assert self.right_motor.connected
         if button_state:
@@ -72,6 +72,8 @@ class Snatch3r(object):
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
 
     def left_backward(self, button_state):
+        """Runs the left motor in reverse at maximum speed and changing the left light red
+           while the button is pressed"""
         assert self.left_motor.connected
         assert self.right_motor.connected
         if button_state:
@@ -82,6 +84,8 @@ class Snatch3r(object):
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
 
     def right_forward(self, button_state):
+        """Runs the right motor in at maximum speed and changing the right light green
+           while the button is pressed"""
         assert self.left_motor.connected
         assert self.right_motor.connected
         if button_state:
@@ -92,6 +96,8 @@ class Snatch3r(object):
             ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
 
     def right_backward(self, button_state):
+        """Runs the right motor in reverse at maximum speed and changing the right light red
+           while the button is pressed"""
         assert self.left_motor.connected
         assert self.right_motor.connected
         if button_state:
@@ -102,6 +108,8 @@ class Snatch3r(object):
             ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
 
     def arm_calibration(self):
+        """Calibrates the gripper arm origin location by sending the arm up until it hits the touch sensor.
+           After it hits the sensor, it goes down the set degrees to reach the calibrated origin"""
         assert self.arm_motor.connected
         self.arm_motor.run_forever(speed_sp=900)
         while not self.touch_sensor.is_pressed:
@@ -115,6 +123,9 @@ class Snatch3r(object):
         self.arm_motor.position = 0  # Calibrate the down position as 0 (this line is correct as is).
 
     def arm_up(self):
+        """Sends the arm up until it hits the touch sensor"""
+        assert self.touch_sensor.connected
+        assert self.arm_motor.connected
         self.arm_motor.run_forever(speed_sp=900)
         while not self.touch_sensor.is_pressed:
             time.sleep(0.01)
@@ -122,12 +133,15 @@ class Snatch3r(object):
         ev3.Sound.beep()
 
     def arm_down(self):
+        """Sends the arm down the set degrees to the origin position"""
+        assert self.touch_sensor.connected
         assert self.arm_motor.connected
         self.arm_motor.run_to_abs_pos(position=0)
         self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)  # Blocks until the motor finishes running
         ev3.Sound.beep()
 
     def shutdown(self):
+        """Stops the robot and sets the lights on the Brickman to green"""
         self.arm_motor.stop(stop_action="brake")
         self.left_motor.stop(stop_action="brake")
         self.right_motor.stop(stop_action="brake")
@@ -135,36 +149,43 @@ class Snatch3r(object):
         ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
 
     def forward(self, left_speed, right_speed):
+        """Moves the robot forward at the given speed"""
         assert self.left_motor.connected
         assert self.right_motor.connected
         self.right_motor.run_forever(speed_sp=right_speed)
         self.left_motor.run_forever(speed_sp=left_speed)
 
     def left(self, left_speed, right_speed):
+        """Rotates the robot left at the given speed"""
         assert self.left_motor.connected
         assert self.right_motor.connected
         self.right_motor.run_forever(speed_sp=right_speed)
         self.left_motor.run_forever(speed_sp=-left_speed)
 
     def stop(self):
+        """Stops the motors on the robot"""
         assert self.left_motor.connected
         assert self.right_motor.connected
         self.right_motor.stop(stop_action="brake")
         self.left_motor.stop(stop_action="brake")
 
     def right(self, left_speed, right_speed):
+        """Rotates the robot right at the given speed"""
         assert self.left_motor.connected
         assert self.right_motor.connected
         self.right_motor.run_forever(speed_sp=-right_speed)
         self.left_motor.run_forever(speed_sp=left_speed)
 
     def back(self, left_speed, right_speed):
+        """Moves the robot backward at the given speed"""
         assert self.left_motor.connected
         assert self.right_motor.connected
         self.right_motor.run_forever(speed_sp=-right_speed)
         self.left_motor.run_forever(speed_sp=-left_speed)
 
     def loop_forever(self):
+        """A loop for the MQTT so that it checks for inputs over the loops
+           instead of the code running once and stopping"""
         self.running = True
         while self.running:
             time.sleep(0.1)
