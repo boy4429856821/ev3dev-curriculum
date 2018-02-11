@@ -31,7 +31,7 @@ class Snatch3r(object):
         self.ir_sensor = ev3.InfraredSensor()
         assert self.ir_sensor.connected
         assert self.color_sensor.connected
-        assert self.pixy.connected
+        #assert self.pixy.connected
         assert self.arm_motor.connected
         assert self.touch_sensor.connected
         assert self.left_motor.connected
@@ -109,6 +109,7 @@ class Snatch3r(object):
             ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
 
     def arm_calibration(self):
+        print('calibration called')
         """Calibrates the gripper arm origin location by sending the arm up until it hits the touch sensor.
            After it hits the sensor, it goes down the set degrees to reach the calibrated origin"""
         assert self.arm_motor.connected
@@ -123,6 +124,7 @@ class Snatch3r(object):
         self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
         ev3.Sound.beep()
         self.arm_motor.position = 0  # Calibrate the down position as 0 (this line is correct as is).
+        print('calibration done')
 
     def arm_up(self):
         """Sends the arm up until it hits the touch sensor"""
@@ -200,7 +202,6 @@ class Snatch3r(object):
 
         ir_sensor = ev3.InfraredSensor()
         find_beacon = ev3.BeaconSeeker(ir_sensor, channel=1)
-
 
         while not self.touch_sensor.is_pressed:
             # The touch sensor can be used to abort the attempt (sometimes handy during testing)
