@@ -37,6 +37,7 @@ class Snatch3r(object):
         assert self.left_motor.connected
         assert self.right_motor.connected
 
+
     def drive_inches(self, distance, deg_speed):
         """Drives a given distance at a given speed (inches and inches/second)
            Drives forwards and backwards based on if the position is positive or negative
