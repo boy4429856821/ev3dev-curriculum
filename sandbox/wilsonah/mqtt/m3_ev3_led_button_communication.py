@@ -95,6 +95,7 @@ class MyDelegate(object):
         else:
             ev3.Leds.set_color(led_side, led_color)
 
+
 def main():
     print("--------------------------------------------")
     print(" LED Button communication")
