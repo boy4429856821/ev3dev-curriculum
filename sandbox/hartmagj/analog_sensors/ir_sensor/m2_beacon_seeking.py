@@ -29,11 +29,12 @@ def main():
     robot = robo.Snatch3r()
     try:
         while True:
-            seek_beacon(robot)
+            found = seek_beacon(robot)
 
-            # TODO: 5. Save the result of the seek_beacon function (a bool), then use that value to only say "Found the
+            # d: 5. Save the result of the seek_beacon function (a bool), then use that value to only say "Found the
             # beacon" if the return value is True.  (i.e. don't say "Found the beacon" if the attempts was cancelled.)
-            ev3.Sound.speak("Found the beacon")
+            if found:
+                ev3.Sound.speak("Found the beacon")
 
             command = input("Hit enter to seek the beacon again or enter q to quit: ")
             if command == "q":
@@ -75,7 +76,7 @@ def seek_beacon(robot):
             print("IR Remote not found. Distance is -128")
             robot.shutdown()
         else:
-            # TODO: 4. Implement the following strategy to find the beacon.
+            # d: 4. Implement the following strategy to find the beacon.
             # If the absolute value of the current_heading is less than 2, you are on the right heading.
             #     If the current_distance is 0 return from this function, you have found the beacon!  return True
             #     If the current_distance is greater than 0 drive straight forward (forward_speed, forward_speed)
@@ -96,23 +97,22 @@ def seek_beacon(robot):
                 # Close enough of a heading to move forward
                 print("On the right heading. Distance: ", current_distance)
                 # You add more!
-                if current_distance <= 2:
+                if math.fabs(current_distance) == 0:
+                    robot.drive_inches(4, 100)
                     robot.shutdown()
                     ev3.Sound.beep()
                     return True
                 else:
-                    robot.drive_inches(1, 900)
+                    robot.forward(100, 100)
 
-                time.sleep(0.1)
-            else:
-                robot.turn_degrees(2, 900)
+            elif math.fabs(current_heading) <= 20:
+                if current_heading < 0:
+                    robot.forward(-100, 100)
+                else:
+                    robot.forward(100, -100)
                 print('turning to look for remote')
-
-
-
-
-
-
+            else:
+                print(current_heading, ' , heading is too far off')
 
         time.sleep(0.2)
 
