@@ -113,12 +113,6 @@ def seek_beacon(robot):
             else:
                 print(current_heading, ' , heading is too far off')
 
-
-
-
-
-
-
         time.sleep(0.2)
 
     # The touch_sensor was pressed to abort the attempt if this code runs.
