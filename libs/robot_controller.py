@@ -201,7 +201,6 @@ class Snatch3r(object):
         ir_sensor = ev3.InfraredSensor()
         find_beacon = ev3.BeaconSeeker(ir_sensor, channel=1)
 
-
         while not self.touch_sensor.is_pressed:
             # The touch sensor can be used to abort the attempt (sometimes handy during testing)
             current_heading = find_beacon.heading  # use the beacon_seeker heading
