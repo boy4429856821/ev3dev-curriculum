@@ -139,8 +139,8 @@ def handle_red_up_1(button_state, dc):
       :type button_state: bool
       :type dc: DataContainer
     """
-
-    display_image(dc.lcd_screen, dc.angry_eyes)
+    if button_state:
+        display_image(dc.lcd_screen, dc.angry_eyes)
 
 
 def handle_red_down_1(button_state, dc):
