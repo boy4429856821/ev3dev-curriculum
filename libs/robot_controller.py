@@ -31,7 +31,7 @@ class Snatch3r(object):
         self.ir_sensor = ev3.InfraredSensor()
         assert self.ir_sensor.connected
         assert self.color_sensor.connected
-        assert self.pixy.connected
+        #assert self.pixy.connected
         assert self.arm_motor.connected
         assert self.touch_sensor.connected
         assert self.left_motor.connected
