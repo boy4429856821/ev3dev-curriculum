@@ -144,11 +144,13 @@ class Snatch3r(object):
 
     def shutdown(self):
         """Stops the robot and sets the lights on the Brickman to green"""
+        self.running = False
         self.arm_motor.stop(stop_action="brake")
         self.left_motor.stop(stop_action="brake")
         self.right_motor.stop(stop_action="brake")
         ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
         ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+
 
     def forward(self, left_speed, right_speed):
         """Moves the robot forward at the given speed"""

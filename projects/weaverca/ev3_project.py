@@ -13,20 +13,48 @@
 
 #importing library
 
-import ev3dev.ev3 as ev3
-import time
 import tkinter
 from tkinter import ttk
-import robot_controller as robo
 import mqtt_remote_method_calls as com
 
-#creating messages to be set to EV3
-def sending_messages_to_ev3():
-    mqtt_client = com.MqttClient()
-    mqtt_client.connect_to_ev3()
 
-def sending_messages_to_pc():
-    mqtt_client = com.MqttClient
-    mqtt_client.connect_to_pc()
+class MyDelegate(object):
+
+     def __init__(self,canvas):
+        self.canvas = canvas
 
 
+def main():
+
+    tinker = tkinter.Tk()
+    tinker.title = "It's the Hot or Cold Game"
+    main_frame = ttk.Frame(tinker, padding=5)
+    main_frame.grid()
+    canvas = tkinter.Canvas(main_frame, background="lightgray", width=800, height=500)
+    canvas.grid(columnspan=2)
+    canvas.bind("<Button-1>", lambda event: left_mouse_click(event, mqtt_client))
+    clear_button = ttk.Button(main_frame, text="Clear")
+    clear_button.grid(row=3, column=0)
+    clear_button["command"] = lambda: clear(canvas)
+    quit_button = ttk.Button(main_frame, text="Quit")
+    quit_button.grid(row=3, column=1)
+    quit_button["command"] = lambda: quit_program(mqtt_client)
+    my_delegate = MyDelegate(canvas)
+    mqtt_client = com.MqttClient(my_delegate)
+    mqtt_client.connect("draw", "draw")
+    print("Shutdown complete.")
+
+    def clear(canvas):
+        canvas.delete("all")
+
+    def quit_program(mqtt_client):
+        if mqtt_client:
+            mqtt_client.close()
+        exit()
+
+    tinker.mainloop()
+
+
+def left_mouse_click(event, mqtt_client):
+    print("You clicked location ({},{})".format(event.x, event.y))
+    mqtt_client.send_message('on_circle_draw', [ event.x, event.y])

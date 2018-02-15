@@ -28,7 +28,7 @@ def main():
 
 
     robot = robo.Snatch3r()
-    robot.pixy.mode = "SIG2"
+    robot.pixy.mode = "SIG1"
 
 
 

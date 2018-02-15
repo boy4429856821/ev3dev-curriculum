@@ -40,7 +40,7 @@ def main():
 
         # Done 4
         # If you open m2_pc_pixy_display you can see the parameters for that method [x, y, width, height]
-        mqtt_client.send_message(' on_rectangle_update', [x,y,width,height])
+        mqtt_client.send_message('on_rectangle_update', [x,y,width,height])
         time.sleep(0.25)
 
     print("Goodbye!")
