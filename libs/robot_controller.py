@@ -190,7 +190,7 @@ class Snatch3r(object):
            instead of the code running once and stopping"""
         self.running = True
         while self.running:
-            time.sleep(0.1)
+            time.sleep(0.01)
 
     def seek_beacon(self):
         """
@@ -236,3 +236,28 @@ class Snatch3r(object):
         print("Abandon ship!")
         self.shutdown()
         return False
+
+    def forward_forever(self):
+        """Moves the robot forward"""
+        assert self.left_motor.connected
+        assert self.right_motor.connected
+        self.right_motor.run_forever()
+        self.left_motor.run_forever()
+
+    def pixy(self):
+
+        self.pixy.mode = "SIG1"
+        self.turn_speed = 120
+
+        while not self.touch_sensor.is_pressed:
+            x = self.pixy.value(1)
+            y = self.pixy.value(2)
+            print("(X,Y)=({},{})".format(x, y))
+
+            if x < 150:
+                self.turn_degrees(-90, turn_speed)
+                self.arm_up()
+            if x > 170:
+                self.turn_degrees(90, turn_speed)
+            else:
+                self.shutdown()
