@@ -144,11 +144,13 @@ class Snatch3r(object):
 
     def shutdown(self):
         """Stops the robot and sets the lights on the Brickman to green"""
+        self.running = False
         self.arm_motor.stop(stop_action="brake")
         self.left_motor.stop(stop_action="brake")
         self.right_motor.stop(stop_action="brake")
         ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
         ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+
 
     def forward(self, left_speed, right_speed):
         """Moves the robot forward at the given speed"""
@@ -190,7 +192,7 @@ class Snatch3r(object):
            instead of the code running once and stopping"""
         self.running = True
         while self.running:
-            time.sleep(0.1)
+            time.sleep(0.01)
 
     def seek_beacon(self):
         """
@@ -236,3 +238,28 @@ class Snatch3r(object):
         print("Abandon ship!")
         self.shutdown()
         return False
+
+    def forward_forever(self):
+        """Moves the robot forward"""
+        assert self.left_motor.connected
+        assert self.right_motor.connected
+        self.right_motor.run_forever()
+        self.left_motor.run_forever()
+
+    def pixy(self):
+
+        self.pixy.mode = "SIG1"
+        self.turn_speed = 120
+
+        while not self.touch_sensor.is_pressed:
+            x = self.pixy.value(1)
+            y = self.pixy.value(2)
+            print("(X,Y)=({},{})".format(x, y))
+
+            if x < 150:
+                self.turn_degrees(-90, turn_speed)
+                self.arm_up()
+            if x > 170:
+                self.turn_degrees(90, turn_speed)
+            else:
+                self.shutdown()

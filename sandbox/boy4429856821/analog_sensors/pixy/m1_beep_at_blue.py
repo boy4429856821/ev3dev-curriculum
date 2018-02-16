@@ -25,14 +25,11 @@ def main():
     print("--------------------------------------------")
     ev3.Sound.speak("Beep at blue").wait()
     print("Press the touch sensor to exit this program.")
-    pixy = ev3.Sensor(driver_name = "pixy-lego")
+
+
     robot = robo.Snatch3r()
     robot.pixy.mode = "SIG1"
-    print('(X,Y0 =({},{}) Width={} Height={}'.format(pixy.value(1),pixy.value(2),pixy.value(3),pixy.value(4)))
-    if "SIG1" is True:
-        ev3.Sound.beep()
-    if robot.pixy.value(3) > 1:
-        ev3.Sound.beep()
+
 
 
     while not robot.touch_sensor.is_pressed:
@@ -42,20 +39,24 @@ def main():
         #   assert self.pixy
         # Then here you can use a command like width = robot.pixy.value(3)
 
-        print('(X,Y0 =({},{}) Width={} Height={}'.format(pixy.value(1), pixy.value(2), pixy.value(3), pixy.value(4)))
-        if "SIG1" is True:
+        x = robot.pixy.value(1)
+        y = robot.pixy.value(2)
+        width = robot.pixy.value(3)
+        height = robot.pixy.value(4)
+        print(x, y, width, height)
+        if width > 0:
             ev3.Sound.beep()
-        if robot.pixy.value(3) > 1:
-            ev3.Sound.beep()
+        print(x, y, width, height)
+        time.sleep(1)
 
 
 
-        time.sleep(0.1)
+
 
     print("Goodbye!")
     ev3.Sound.speak("Goodbye").wait()
 
-# TODO: 3. Call over a TA or instructor to sign your team's checkoff sheet.
+# Done 3
 #
 # Observations you should make, the Pixy cam can detect colors.  That's just neat. ;)
 
