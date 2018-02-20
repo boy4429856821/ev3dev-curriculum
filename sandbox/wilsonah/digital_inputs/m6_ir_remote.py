@@ -82,7 +82,6 @@ def main():
 
     while dc.running:
         # DONE: 5. Process the RemoteControl objects.
-        print("loop")
         rc1.process()
         rc2.process()
         btn.process()
@@ -104,8 +103,6 @@ def main():
 
 
 def handle_left_forward(button_state, robot):
-    print('left forward called')
-    print('left forward true')
     robot.left_forward(button_state)
 
 
