@@ -11,10 +11,11 @@ Setup the program to continue to run until the user presses the touch sensor.
 Authors: David Fisher and Grant Hartman.  February 2017.
 """  # d: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
-import ev3dev.ev3 as ev3
 import time
 
-import robot_controller as robo
+import ev3dev.ev3 as ev3
+
+from projects.weaverca import robot_controller1 as robo
 
 
 def main():

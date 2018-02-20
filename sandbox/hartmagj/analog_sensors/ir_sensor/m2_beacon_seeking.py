@@ -11,13 +11,13 @@ prompted if they want to find the beacon again (presumably you move it first) or
 
 Authors: David Fisher and Grant Hartman.
 """  # d: 1. PUT YOUR NAME IN THE ABOVE LINE.
+import math
+import time
 import traceback
 
 import ev3dev.ev3 as ev3
-import time
-import math
 
-import robot_controller as robo
+from projects.weaverca import robot_controller1 as robo
 
 
 def main():

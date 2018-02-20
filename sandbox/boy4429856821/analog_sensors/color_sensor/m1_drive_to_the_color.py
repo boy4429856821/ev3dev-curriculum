@@ -16,11 +16,11 @@ If the user presses the Right button, the robot drives until the robot gets to W
 Authors: David Fisher and Coleman Weaver 
 """  # Done 1 .
 
-import ev3dev.ev3 as ev3
 import time
 
-import robot_controller as robo
+import ev3dev.ev3 as ev3
 
+from projects.weaverca import robot_controller1 as robo
 
 # Potential values of the color_sensor.color property
 #   ev3.ColorSensor.COLOR_NOCOLOR is the value 0

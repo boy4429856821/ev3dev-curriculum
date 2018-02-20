@@ -14,28 +14,30 @@
 import ev3dev.ev3 as ev3
 import time
 import math
+import mqtt_remote_method_calls as com
 
-
+#  11-28-01
 class Snatch3r(object):
     """Commands for the Snatch3r robot that might be useful in many different programs."""
     # DONE: Implement the Snatch3r class as needed when working the sandox exercises
     # (and delete these comments)
     def __init__(self):
         self.running = True
-        self.left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+        self.left_motor = ev3.LargeMotor(ev3.OUTPUT_D)
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
         self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
         self.touch_sensor = ev3.TouchSensor()
         self.pixy = ev3.Sensor(driver_name="pixy-lego")
         self.color_sensor = ev3.ColorSensor()
         self.ir_sensor = ev3.InfraredSensor()
+        self.mqtt_client = com.MqttClient
         assert self.ir_sensor.connected
         assert self.color_sensor.connected
         assert self.pixy.connected
         assert self.arm_motor.connected
         assert self.touch_sensor.connected
-        assert self.left_motor.connected
         assert self.right_motor.connected
+        assert self.left_motor.connected
 
     def drive_inches(self, distance, deg_speed):
         """Drives a given distance at a given speed (inches and inches/second)
@@ -212,14 +214,16 @@ class Snatch3r(object):
                 print("IR Remote not found. Distance is -128")
                 self.shutdown()
             else:
-                if math.fabs(current_heading) < 2:
+                if math.fabs(current_heading) < 7 and  math.fabs(current_heading) >5:
+                    ev3.Sound.speak('cold')
                     print("On the right heading. Distance: ", current_distance)
 
-                    if math.fabs(current_distance) == 0:
+                    if math.fabs(current_distance) < 4:
                         self.drive_inches(4, 100)
-                        self.shutdown()
+                        ev3.Sound.speak('warm')
+                        self.arm_up()
                         ev3.Sound.beep()
-                        return True
+                        break
                     else:
                         self.forward(100, 100)
 
@@ -229,8 +233,10 @@ class Snatch3r(object):
                     else:
                         self.forward(100, -100)
                     print('turning to look for remote')
+                    ev3.Sound.speak('warmer')
                 else:
                     print(current_heading, ' , heading is too far off')
+                    ev3.Sound.speak("too cold")
 
             time.sleep(0.2)
 
@@ -241,25 +247,92 @@ class Snatch3r(object):
 
     def forward_forever(self):
         """Moves the robot forward"""
+        print('forward')
+        time.sleep(0.01)
         assert self.left_motor.connected
         assert self.right_motor.connected
-        self.right_motor.run_forever()
-        self.left_motor.run_forever()
+        self.right_motor.run_forever(speed_sp = 1000)
+        self.left_motor.run_forever(speed_sp = 1000)
 
-    def pixy(self):
 
-        self.pixy.mode = "SIG1"
-        self.turn_speed = 120
+    def backward_forever(self):
+        print('backward')
+        time.sleep(0.01)
+        assert self.left_motor.connected
+        assert self.right_motor.connected
+        self.right_motor.run_forever(speed_sp=-1000)
+        self.left_motor.run_forever(speed_sp=-1000)
+
+
+
+    def color_detection(self):
+        self.pixy.mode = 'SIG1'
+        x1 = self.pixy.value(1)
+        y1 = self.pixy.value(2)
+        width1 = self.pixy.value(3)
+        height1 = self.pixy.value(4)
+        self.pixy.mode = 'SIG2'
+        x2 = self.pixy.value(1)
+        y2 = self.pixy.value(2)
+        width2 = self.pixy.value(3)
+        height2 = self.pixy.value(4)
 
         while not self.touch_sensor.is_pressed:
-            x = self.pixy.value(1)
-            y = self.pixy.value(2)
-            print("(X,Y)=({},{})".format(x, y))
-
-            if x < 150:
-                self.turn_degrees(-90, turn_speed)
+            self.pixy.mode = 'SIG1'
+            x1 = self.pixy.value(1)
+            y1 = self.pixy.value(2)
+            width1 = self.pixy.value(3)
+            height1 = self.pixy.value(4)
+            self.pixy.mode = 'SIG2'
+            x2 = self.pixy.value(1)
+            y2 = self.pixy.value(2)
+            width2 = self.pixy.value(3)
+            height2 = self.pixy.value(4)
+            print("(X1,Y1,X2,Y2)=({},{},{},{})".format(x1, y1,x2,y2))
+            if x1 > 30 and x1 < 50:
+                ev3.Sound.speak("cold")
+            if x2 >200 and x2 < 250:
+                ev3.Sound.speak("warm")
+                self.turn_degrees(-90,100)
                 self.arm_up()
-            if x > 170:
-                self.turn_degrees(90, turn_speed)
-            else:
-                self.shutdown()
+                self.right(100,100)
+                self.arm_calibration()
+            if height1 > 300:
+                ev3.Sound.speak("cold")
+                self.turn_degrees(90,100)
+            if x1 > 200:
+                time.sleep(0.01)
+                ev3.Sound.speak("run away from the human!")# Ask Mutchler about this
+                self.right(left_speed=1000,right_speed=1000)
+                self.forward(left_speed=100,right_speed=100)
+
+
+    def do_stop(self):
+        print("stop")
+        time.sleep(0.1)
+        assert self.left_motor.connected
+        assert self.right_motor.connected
+        self.left_motor.run_forever(speed_sp = 0)
+        self.right_motor.run_forever(speed_sp = 0)
+
+
+
+    def turn_forever(self):
+        print('turn')
+        time.sleep(0.01)
+        assert self.left_motor.connected
+        assert self.right_motor.connected
+        self.right_motor.run_forever(speed_sp=-1000)
+        self.left_motor.run_forever(speed_sp=1000)
+
+    def set_mqtt(self,mqtt):
+        self.mqtt = mqtt
+
+    def close(self):
+        self.close()
+
+
+
+
+
+

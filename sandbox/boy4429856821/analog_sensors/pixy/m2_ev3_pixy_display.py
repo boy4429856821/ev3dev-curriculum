@@ -6,11 +6,12 @@ EV3 to the PC.
 Authors: David Fisher and Coleman Weaver February 2017.
 """  # Done.
 
-import ev3dev.ev3 as ev3
 import time
 
-import robot_controller as robo
+import ev3dev.ev3 as ev3
+
 import mqtt_remote_method_calls as com
+from projects.weaverca import robot_controller1 as robo
 
 
 def main():

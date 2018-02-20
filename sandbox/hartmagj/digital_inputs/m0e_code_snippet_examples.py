@@ -9,10 +9,11 @@ https://docs.google.com/presentation/d/1mUxsC-cUO4S5bwhTAQG0G10IO0gsbAU5YEORxeh0
 Author: David Fisher
 """
 
-import ev3dev.ev3 as ev3
 import time
 
-import robot_controller as robo
+import ev3dev.ev3 as ev3
+
+from projects.weaverca import robot_controller1 as robo
 
 
 def touch_sensor_as_state():

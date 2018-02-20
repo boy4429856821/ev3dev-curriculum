@@ -29,9 +29,10 @@ more. Once the EV3 code is ready, run it on the EV3 you can work on the PC side 
 
 Author: David Fisher.
 """
-import mqtt_remote_method_calls as com
-import robot_controller as robo
 import ev3dev.ev3 as ev3
+
+import mqtt_remote_method_calls as com
+from projects.weaverca import robot_controller1 as robo
 
 
 def main():

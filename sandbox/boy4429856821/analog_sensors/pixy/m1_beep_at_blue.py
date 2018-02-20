@@ -13,10 +13,11 @@ for your environment). After a beep wait for at least 1 second to avoid lots of 
 Authors: David Fisher and Coleman Weaver
 """  # Done 1
 
-import ev3dev.ev3 as ev3
 import time
 
-import robot_controller as robo
+import ev3dev.ev3 as ev3
+
+from projects.weaverca import robot_controller1 as robo
 
 
 def main():

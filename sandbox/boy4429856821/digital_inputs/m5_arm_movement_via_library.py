@@ -7,7 +7,7 @@ This module will work exactly the same as the prior module but will do that work
 Authors: David Fisher and Coleman Weaver
 """  # Done 1
 
-# TODO: 2. Have everyone talk about this problem together then pick one team member to modify libs/robot_controller.py
+# TODO: 2. Have everyone talk about this problem together then pick one team member to modify libs/robot_controller1.py
 # as necessary to make the code below perform the same task as the prior module. Once the code has been tested and shown
 # to work, then have that person commit their work.  All other team members need to do a VCS --> Update project...
 # Once the library is implemented each team member should be able to run their version of this code on the robot.
@@ -17,7 +17,8 @@ Authors: David Fisher and Coleman Weaver
 # Observations you should make, you are a TEAM and making great library methods will make life easier for everyone.
 
 import ev3dev.ev3 as ev3
-import robot_controller as robo
+
+from projects.weaverca import robot_controller1 as robo
 
 
 def main():

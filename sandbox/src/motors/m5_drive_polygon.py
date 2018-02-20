@@ -9,7 +9,8 @@ Authors: David Fisher and PUT_YOUR_NAME_HERE.
 """  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 import ev3dev.ev3 as ev3
-import robot_controller as robo
+
+from projects.weaverca import robot_controller1 as robo
 
 
 def main():

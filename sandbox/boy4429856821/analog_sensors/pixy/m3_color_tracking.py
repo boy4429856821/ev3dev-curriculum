@@ -8,10 +8,11 @@ move forwards or backwards.
 Authors: David Fisher and Coleman Weaver
 """  # Done.
 
-import ev3dev.ev3 as ev3
 import time
 
-import robot_controller as robo
+import ev3dev.ev3 as ev3
+
+from projects.weaverca import robot_controller1 as robo
 
 
 def main():

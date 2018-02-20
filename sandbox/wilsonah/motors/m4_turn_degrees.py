@@ -19,7 +19,7 @@ Authors: David Fisher and Andrew Wilson.
 #
 #   def turn_degrees(self, degrees_to_turn, turn_speed_sp):
 #
-#   Develop your code as a team within the robot_controller.py file and make sure all team member understand it.
+#   Develop your code as a team within the robot_controller1.py file and make sure all team member understand it.
 #   MAKE SOMEONE DIFFERENT TYPE!  You may not allow the same person to type that typed the drive_inches method.
 #   In that library method:
 #     To make a left turn (positive degrees_to_turn values) at a given turn_speed_sp set the left wheel to
@@ -50,7 +50,8 @@ Authors: David Fisher and Andrew Wilson.
 # Observations you should make, using run_to_rel_pos is useful for accurate turns, but testing takes time.
 
 import ev3dev.ev3 as ev3
-import robot_controller as robo
+
+from projects.weaverca import robot_controller1 as robo
 
 
 def main():

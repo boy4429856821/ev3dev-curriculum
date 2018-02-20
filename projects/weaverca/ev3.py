@@ -11,20 +11,27 @@
 # it will pick up the object and beep.
 
 
-import mqtt_remote_method_calls as com
-import robot_controller as robo
+import time
+
 import ev3dev.ev3 as ev3
+
+import mqtt_remote_method_calls as com
+from projects.weaverca import robot_controller1 as robo
 
 
 def main():
-    robot = robo.Snatch3r()
-    ev3.Sound.speak("I am Running")
-    mqtt_client = com.MqttClient(robot)
-    mqtt_client.connect_to_pc()
-    robot.loop_forever()
+    delegate = robo.Snatch3r()
+    ev3.Sound.speak("Let's play the Hot and Cold Game!")
+    mqtt = com.MqttClient(delegate)
+    delegate.set_mqtt(mqtt)
+    mqtt.connect_to_pc()
+    mqtt.send_message('draw_circle_from_robot')
 
 
 
+    time.sleep(0.05)
+    delegate.loop_forever()
 
+main()
 
 

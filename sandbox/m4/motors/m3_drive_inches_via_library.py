@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 This module lets you practice refactoring code to use a shared library.  The code in this file is already finished.
-The team should work together and pick one team member to type code into libs/robot_controller.py to create a
+The team should work together and pick one team member to type code into libs/robot_controller1.py to create a
 constructor and a method called drive_inches.
 
 Authors: David Fisher and PUT_YOUR_NAME_HERE.
@@ -14,7 +14,7 @@ Authors: David Fisher and PUT_YOUR_NAME_HERE.
 #   That folder path is special on your robot because it is set as the PYTHONPATH (done within the .bashrc file)
 #   Normally you can't just use a module in some random folder, but the libs folder has been setup special.
 
-# TODO: 3. Have everyone talk about this problem together then pick one team member to modify libs/robot_controller.py
+# TODO: 3. Have everyone talk about this problem together then pick one team member to modify libs/robot_controller1.py
 # as necessary to make the code below perform the same task as the prior module. As mentioned in the top doc-string for
 # the file, you may not modify the code below.  Warning, make sure you UPLOAD the library to the robot before running
 # this module.
@@ -33,7 +33,8 @@ Authors: David Fisher and PUT_YOUR_NAME_HERE.
 # Observations you should make, you are a TEAM and making great library methods will make life easier for everyone.
 
 import ev3dev.ev3 as ev3
-import robot_controller as robo
+
+from projects.weaverca import robot_controller1 as robo
 
 
 def main():
