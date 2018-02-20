@@ -36,7 +36,12 @@ class Snatch3r(object):
         assert self.touch_sensor.connected
         assert self.left_motor.connected
         assert self.right_motor.connected
+        self.color_value = 0
+        self.mqtt = None
 
+    def set_mqtt(self, mqtt):
+        """Makes the mqtt client usable in the delegate"""
+        self.mqtt = mqtt
 
     def drive_inches(self, distance, deg_speed):
         """Drives a given distance at a given speed (inches and inches/second)
@@ -192,6 +197,19 @@ class Snatch3r(object):
         self.running = True
         while self.running:
             time.sleep(0.1)
+    
+    def find_color(self):
+        """ Searches for a color and stops when it finds it. It then sends that value to the PC to determine the
+        challenger"""
+        self.right_motor.run_forever(speed_sp=600)
+        self.left_motor.run_forever(speed_sp=600)
+        time.sleep(1.0)
+        while self.color_sensor.color == 6:
+            time.sleep(.01)
+        self.right_motor.stop(stop_action="brake")
+        self.left_motor.stop(stop_action="brake")
+        ev3.Sound.beep()
+        self.mqtt.send_message("color_found", [int(self.color_sensor.color)])
 
     def seek_beacon(self):
         """
