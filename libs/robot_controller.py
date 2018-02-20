@@ -36,6 +36,12 @@ class Snatch3r(object):
         assert self.touch_sensor.connected
         assert self.left_motor.connected
         assert self.right_motor.connected
+        self.color_value = 0
+        self.mqtt = None
+
+    def set_mqtt(self, mqtt):
+        """Makes the mqtt client usable in the delegate"""
+        self.mqtt = mqtt
 
     def drive_inches(self, distance, deg_speed):
         """Drives a given distance at a given speed (inches and inches/second)
@@ -144,13 +150,11 @@ class Snatch3r(object):
 
     def shutdown(self):
         """Stops the robot and sets the lights on the Brickman to green"""
-        self.running = False
         self.arm_motor.stop(stop_action="brake")
         self.left_motor.stop(stop_action="brake")
         self.right_motor.stop(stop_action="brake")
         ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
         ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
-
 
     def forward(self, left_speed, right_speed):
         """Moves the robot forward at the given speed"""
@@ -192,7 +196,20 @@ class Snatch3r(object):
            instead of the code running once and stopping"""
         self.running = True
         while self.running:
-            time.sleep(0.01)
+            time.sleep(0.1)
+    
+    def find_color(self):
+        """ Searches for a color and stops when it finds it. It then sends that value to the PC to determine the
+        challenger"""
+        self.right_motor.run_forever(speed_sp=600)
+        self.left_motor.run_forever(speed_sp=600)
+        time.sleep(1.0)
+        while self.color_sensor.color == 6:
+            time.sleep(.01)
+        self.right_motor.stop(stop_action="brake")
+        self.left_motor.stop(stop_action="brake")
+        ev3.Sound.beep()
+        self.mqtt.send_message("color_found", [int(self.color_sensor.color)])
 
     def seek_beacon(self):
         """
@@ -202,6 +219,7 @@ class Snatch3r(object):
 
         ir_sensor = ev3.InfraredSensor()
         find_beacon = ev3.BeaconSeeker(ir_sensor, channel=1)
+
 
         while not self.touch_sensor.is_pressed:
             # The touch sensor can be used to abort the attempt (sometimes handy during testing)
@@ -238,28 +256,3 @@ class Snatch3r(object):
         print("Abandon ship!")
         self.shutdown()
         return False
-
-    def forward_forever(self):
-        """Moves the robot forward"""
-        assert self.left_motor.connected
-        assert self.right_motor.connected
-        self.right_motor.run_forever()
-        self.left_motor.run_forever()
-
-    def pixy(self):
-
-        self.pixy.mode = "SIG1"
-        self.turn_speed = 120
-
-        while not self.touch_sensor.is_pressed:
-            x = self.pixy.value(1)
-            y = self.pixy.value(2)
-            print("(X,Y)=({},{})".format(x, y))
-
-            if x < 150:
-                self.turn_degrees(-90, turn_speed)
-                self.arm_up()
-            if x > 170:
-                self.turn_degrees(90, turn_speed)
-            else:
-                self.shutdown()
