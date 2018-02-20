@@ -89,15 +89,15 @@ def main():
 
     rc2 = ev3.RemoteControl(channel=2)
     assert rc2.connected
-    rc2.on_red_up = lambda state: handle_red_up_1(state, dc)
+    rc2.on_red_up = lambda state: handle_red_up_2(state, dc)
 
     rc3 = ev3.RemoteControl(channel=3)
     assert rc3.connected
-    rc3.on_red_up = lambda state: handle_red_up_1(state, dc)
+    rc3.on_red_up = lambda state: handle_red_up_3(state, dc)
 
     rc4 = ev3.RemoteControl(channel=4)
     assert rc4.connected
-    rc3.on_red_up = lambda state: handle_red_up_1(state, dc)
+    rc4.on_red_up = lambda state: handle_red_up_4(state, dc)
 
     # Buttons on EV3
     btn = ev3.Button()
@@ -139,8 +139,8 @@ def handle_red_up_1(button_state, dc):
       :type button_state: bool
       :type dc: DataContainer
     """
-
-    display_image(dc.lcd_screen, dc.angry_eyes)
+    if button_state:
+        display_image(dc.lcd_screen, dc.angry_eyes)
 
 
 def handle_red_down_1(button_state, dc):
