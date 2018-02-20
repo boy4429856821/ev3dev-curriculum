@@ -25,18 +25,22 @@ def main():
     # Add the pixy property to that class if you have not done so already.
     robot = robo.Snatch3r()
     robot.pixy.mode = "SIG1"
-    turn_speed = 100
+    turn_speed = 120
 
     while not robot.touch_sensor.is_pressed:
 
-        # TODO: 2. Read the Pixy values for x and y
+        # Done 1
+        x = robot.pixy.value(1)
+        y = robot.pixy.value(2)
+        print("(X,Y)=({},{})".format(x,y))
 
-        print(robot.pixy.value(1))
-        print(robot.pixy.value(2))
 
-        if robot.pixy.value(1) <150:
+        if x <150:
             robot.turn_degrees(-90,turn_speed)
-        if robot.pixy.value(1)
+        if x > 170:
+            robot.turn_degrees(90,turn_speed)
+        else:
+            robot.shutdown()
 
         # TODO: 3. Use the x value to turn the robot
         #   If the Pixy x value is less than 150 turn left (-turn_speed, turn_speed)

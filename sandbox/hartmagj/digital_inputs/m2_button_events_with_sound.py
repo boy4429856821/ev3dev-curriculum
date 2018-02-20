@@ -75,29 +75,7 @@ def main():
 # TODO: 4. Implement the up, down, left, and right callback functions as follows:
 #   handle_up_button - when state is True (a press), call play_song_by_individual_tones()
 #     You can leave the print messages below, just add the new requirement stated above.
-#   handle_down_button - when state is True (a press), call play_song_by_notes_list()
-#     You should copy your handle_up_button function, change the name, and modify it as needed (including prints)
-#   handle_left_button - when state is True (a press), call speak()
-#   handle_right_button - when state is True (a press), call play_wav_file()
-#
-# Once implemented test your code by trying all four buttons.  Observe the print messages and sounds played.
-#   The recommended test order is up, down, left, then right (each gets more interesting in that order)
-#   When you finish that test hit Back to exit the program.
-def handle_up_button(button_state):
-    """Handle IR / button event."""
-    if button_state:
-        print("Up button is pressed")
-    else:
-        print("Up button was released")
 
-
-def handle_down_button(button_state):
-        print("Down button is pressed")
-    else:
-        print("Down button is pressed")
-
-def handle_right_button(button_state):
-        print("")
 
 
 

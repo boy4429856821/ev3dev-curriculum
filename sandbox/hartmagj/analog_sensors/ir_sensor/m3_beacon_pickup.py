@@ -26,6 +26,8 @@ import time
 
 import robot_controller as robo
 
+robot = robo.Snatch3r()
+
 
 def main():
     print("--------------------------------------------")
@@ -38,7 +40,6 @@ def main():
     # Your only edits will be in the Snatch3r class.
     #####################################################
 
-    robot = robo.Snatch3r()
     try:
         while True:
             found_beacon = robot.seek_beacon()
